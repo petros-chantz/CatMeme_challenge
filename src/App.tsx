@@ -1,40 +1,27 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 const baseURL = "https://cataas.com";
 
 const App = () => {
   const [tag, setTag] = useState<any>(null);
   const [customText, setCustomText] = useState<string>("");
-  const [urlText, setUrlText] = useState<any>();
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${baseURL}/cat`)
-  //     .then((response) => {
-  //       setRandomCat(response);
-  //       console.log(randomCat.data);
-  //     })
-  //     .catch((error) => console.error("Error"));
-  // }, []);
+  const [photoUrl, setPhotoUrl] = useState<string>(`${baseURL}/cat`);
 
   const HandleTagChange = (e: any) => {
     setTag(e.target.value);
   };
 
   const HandleCustomText = (e: any) => {
-    setCustomText(e.target.value);
+    setCustomText(e.target.value.replace(/\s+/g, "%20"));
   };
 
   const HandleCreateMeme = () => {
-    // axios
-    //   .get(`${baseURL}/cat/${tag}/says/${customText}`)
-    //   .then((response) => {})
-    //   .catch((error) => console.error("Error"));
-    console.log(`${baseURL}/cat/${tag}/says/${customText}`);
+    if (tag === null) {
+      return null;
+    }
+    setPhotoUrl(`${baseURL}/cat/${tag}/says/${customText}`);
+    // setPhotoUrl(`${baseURL}/cat/says/${customText}?${tag}`);
   };
-
-  console.log(customText);
 
   return (
     <div className="flex flex-col justify-start h-screen gap-24 px-5 pt-10 bg-gray-100">
@@ -49,12 +36,13 @@ const App = () => {
           name="tag"
           className="self-end h-10 px-3 py-2 pr-3 text-base rounded-md w-52 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
           defaultValue="Filter on Tag"
+          placeholder="Filter on Tag"
           onChange={(e) => HandleTagChange(e)}
         >
           <option>cute</option>
           <option>shark</option>
           <option>witch</option>
-          <option>Tired cat</option>
+          <option>gif</option>
           <option>kitty</option>
         </select>
 
@@ -66,16 +54,18 @@ const App = () => {
           placeholder="Custom text"
           onChange={(e) => HandleCustomText(e)}
         />
-        <button
-          type="button"
-          className="items-center self-end rounded border text-lg h-10 border-transparent bg-indigo-600 px-2.5 py-1.5 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          onClick={HandleCreateMeme}
-        >
-          CREATE MEME
-        </button>
+        <div className="self-end">
+          <button
+            type="button"
+            className="items-center self-center rounded border text-lg h-10 border-transparent bg-indigo-600 px-2.5 py-1.5 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            onClick={HandleCreateMeme}
+          >
+            <p className="self-center">CREATE MEME</p>
+          </button>
+        </div>
       </div>
       <div className={`flex self-center justify-center w-3/4 h-2/3`}>
-        <img src="https://cataas.com/cat" alt="cat-meme" />
+        <img src={photoUrl} alt="cat-meme" />
       </div>
     </div>
   );
