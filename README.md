@@ -1,6 +1,6 @@
 # Cat Meme Challenge
 
-Based on (Cataas API)[https://cataas.com/#/]
+Generate a cat meme based on [Cataas API](https://cataas.com/#/)
 
 ### Tech Used
 
